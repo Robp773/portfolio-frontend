@@ -16,9 +16,9 @@ export const indexPageQuery = graphql`
     allStrapiProject {
       edges {
         node {
-          title
+          name
           description
-          gallery {
+          screenshots {
             localFile {
               childImageSharp {
                 gatsbyImageData
