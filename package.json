@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Robert Peterman",
   "dependencies": {
+    "@blueprintjs/core": "^4.2.0",
     "gatsby": "^4.12.1",
     "gatsby-plugin-gatsby-cloud": "^4.12.1",
     "gatsby-plugin-image": "^2.12.1",
