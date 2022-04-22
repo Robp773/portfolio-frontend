@@ -1,29 +1,23 @@
-import * as React from "react"
 import { graphql } from "gatsby"
-import { Button, Tag } from "@blueprintjs/core"
-import { Icon, IconSize } from "@blueprintjs/core"
+import * as React from "react"
 import Layout from "../components/layout"
 import TechDisplay from "../components/techDisplay"
 
-const tagStyle = {
-  margin: "auto 10px",
-}
 const tagContainerStyle = {
   textAlign: "center",
   display: "flex",
   justifyContent: "center",
   flexWrap: "wrap",
 }
+
 const introTextWrapper = {
   margin: "20px 0",
-}
-const iconStyle = {
-  fontSize: "40px",
 }
 
 const IndexPage = data => {
   return (
     <Layout path={data.location.pathname}>
+
       <div style={introTextWrapper}>
         <h2 style={{ textAlign: "center" }} className="bp4-heading">
           Rob Peterman
@@ -31,7 +25,6 @@ const IndexPage = data => {
         <h3 style={{ textAlign: "center" }} className="bp4-heading">
           Full Stack JavaScript Developer
         </h3>
-
       </div>
 
       <div>

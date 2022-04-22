@@ -4,7 +4,7 @@ import * as React from "react"
 // import Seo from "../components/seo"
 
 const NotFoundPage = () => (
-  <div>s404 page</div>
+  <div>404 page</div>
 )
 
 export default NotFoundPage

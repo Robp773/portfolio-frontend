@@ -6,6 +6,7 @@
   "author": "Robert Peterman",
   "dependencies": {
     "@blueprintjs/core": "^4.2.0",
+    "@octokit/core": "^3.6.0",
     "gatsby": "^4.12.1",
     "gatsby-plugin-gatsby-cloud": "^4.12.1",
     "gatsby-plugin-image": "^2.12.1",
@@ -18,6 +19,7 @@
     "gatsby-source-strapi": "^2.0.0",
     "gatsby-transformer-remark": "^5.12.1",
     "gatsby-transformer-sharp": "^4.12.1",
+    "moment": "^2.29.3",
     "prop-types": "^15.8.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
