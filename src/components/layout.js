@@ -1,14 +1,19 @@
 import { Alignment, Button, Navbar } from "@blueprintjs/core"
 import React from "react"
 import { Link } from "gatsby"
+import { Colors } from "@blueprintjs/core"
 
 const contentWrapper = {
   padding: "10px",
 }
+
 const Layout = ({ children, path }) => {
   return (
-    <div>
-      <Navbar className="bp4-dark">
+    <div
+      className="bp4-dark"
+      style={{ minHeight: "100vh", background: Colors.DARK_GRAY3 }}
+    >
+      <Navbar>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>Portfolio</Navbar.Heading>
           <Navbar.Divider />
