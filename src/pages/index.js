@@ -1,4 +1,3 @@
-import { graphql } from "gatsby"
 import * as React from "react"
 import Layout from "../components/layout"
 import TechDisplay from "../components/techDisplay"
@@ -47,30 +46,4 @@ const IndexPage = data => {
   )
 }
 
-export const indexPageQuery = graphql`
-  {
-    allStrapiProject {
-      edges {
-        node {
-          name
-          description
-          screenshots {
-            localFile {
-              childImageSharp {
-                gatsbyImageData
-              }
-            }
-          }
-          main_image {
-            localFile {
-              childImageSharp {
-                gatsbyImageData
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
 export default IndexPage

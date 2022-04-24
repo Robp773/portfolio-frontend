@@ -1,4 +1,3 @@
-import { graphql } from "gatsby"
 import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout"
 import moment from "moment"
@@ -51,7 +50,7 @@ const ActivityPage = data => {
       setPosts(posts)
 
       const count = {}
-      data.map(ghEvent => {
+      data.forEach(ghEvent => {
         const repoName = ghEvent.repo.name
         if (!Object.keys(count).includes(repoName)) {
           count[repoName] = 1
@@ -65,8 +64,10 @@ const ActivityPage = data => {
     })()
   }, [])
   return (
-    <Layout  path={data.location.pathname}>
-      <h3 style={commitsGrid}>Recent Commits</h3>
+    <Layout path={data.location.pathname}>
+      <h3 className="bp4-heading" style={commitsGrid}>
+        Recent Commits
+      </h3>
       <div style={commitsGrid}>
         <div>
           <table
@@ -82,29 +83,25 @@ const ActivityPage = data => {
             </thead>
             <tbody>
               {commits.map((data, index) => {
-                if (data.payload.commits && data.payload.commits[0]) {
-                  return (
-                    <tr key={index}>
-                      <td>{data.repo.name}</td>
-                      <td>
-                        {data.payload.commits.map((commit, index) => {
-                          return (
-                            <div key={index}>
-                              <a
-                                href={`https://github.com/${data.repo.name}/commit/${commit.sha}`}
-                              >
-                                {commit.message}
-                              </a>
-                            </div>
-                          )
-                        })}
-                      </td>
-                      <td>{moment(data.created_at).fromNow()}</td>
-                    </tr>
-                  )
-                } else {
-                  return null
-                }
+                return data.payload.commits && data.payload.commits[0] ? (
+                  <tr key={index}>
+                    <td>{data.repo.name}</td>
+                    <td>
+                      {data.payload.commits.map((commit, index) => {
+                        return (
+                          <div key={index}>
+                            <a
+                              href={`https://github.com/${data.repo.name}/commit/${commit.sha}`}
+                            >
+                              {commit.message}
+                            </a>
+                          </div>
+                        )
+                      })}
+                    </td>
+                    <td>{moment(data.created_at).fromNow()}</td>
+                  </tr>
+                ) : null
               })}
             </tbody>
           </table>
@@ -141,28 +138,33 @@ const ActivityPage = data => {
       </div>
 
       <Divider />
-      <h3 classNambloeG="bading">Blog Posts</h3>
+      <h3 className="bp4-heading">Blog Posts</h3>
       <div style={blogGrid}>
         {posts.map((post, index) => {
           return (
             <Card key={index} elevation={Elevation.TWO}>
-              <img src={post.social_image} style={{maxWidth: "100%"}}/>
+              <img
+                alt={post.title}
+                src={post.social_image}
+                style={{ maxWidth: "100%" }}
+              />
               <h5 className="bp4-heading">{post.title} </h5>
               <div>
                 {post.tag_list.map((tag, index) => {
                   return (
-                    <Tag
-                      style={{ marginRight: "5px" }}
-                      key={index}
-                    >
+                    <Tag style={{ marginRight: "5px" }} key={index}>
                       {tag}
                     </Tag>
                   )
                 })}
               </div>
-              <p className="bp4-ui-text" style={{margin: "10px auto"}}>{post.description}</p>
+              <p className="bp4-ui-text" style={{ margin: "10px auto" }}>
+                {post.description}
+              </p>
               <Button intent="primary">
-                <a style={{color: Colors.WHITE}}href={post.url}>Read</a>
+                <a style={{ color: Colors.WHITE }} href={post.url}>
+                  Read
+                </a>
               </Button>
             </Card>
           )
@@ -172,30 +174,4 @@ const ActivityPage = data => {
   )
 }
 
-export const activityPageQuery = graphql`
-  {
-    allStrapiProject {
-      edges {
-        node {
-          name
-          description
-          screenshots {
-            localFile {
-              childImageSharp {
-                gatsbyImageData
-              }
-            }
-          }
-          main_image {
-            localFile {
-              childImageSharp {
-                gatsbyImageData
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
 export default ActivityPage

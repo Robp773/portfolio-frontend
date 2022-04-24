@@ -3,11 +3,8 @@ import * as React from "react"
 import Layout from "../../components/layout"
 
 const ActivityPage = data => {
-  return (
-    <Layout path={data.location.pathname}>
-      projects page
-    </Layout>
-  )
+  console.log(data)
+  return <Layout path={data.location.pathname}>projects page</Layout>
 }
 
 export const activityPageQuery = graphql`
