@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import Layout from "../../components/layout"
 import moment from "moment"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
@@ -10,21 +10,31 @@ import {
   Colors,
   Divider,
   Elevation,
+  Spinner,
+  SpinnerSize,
   Tag,
 } from "@blueprintjs/core"
+import Media from "react-media"
 const blogGrid = {
   display: "grid",
   gridTemplateColumns: "1fr 1fr 1fr 1fr",
   gap: "5px",
 }
-
+const mobileBlogGrid = {
+  display: "grid",
+  gridTemplateColumns: "1fr",
+  gap: "5px",
+}
 const commitsGrid = {
   display: "grid",
-  gridTemplateColumns: "60% 40%",
+  gridTemplateColumns: "30% 70%",
 }
-
+const mobileCommitsGrid = {
+  display: "grid",
+  gridTemplateColumns: "1fr",
+}
 const tableStyles = {
-  maxHeight: "400px",
+  maxHeight: "350px",
   overflowY: "scroll",
   display: "inline-block",
 }
@@ -35,6 +45,7 @@ const ActivityPage = data => {
   const [commits, setCommits] = useState([])
   const [chartData, setChartData] = useState({ labels: [], data: {} })
   const [posts, setPosts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     ;(async () => {
@@ -61,115 +72,170 @@ const ActivityPage = data => {
 
       setChartData({ labels: Object.keys(count), data: Object.values(count) })
       setCommits(data)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 250)
     })()
   }, [])
   return (
     <Layout path={data.location.pathname}>
-      <h3 className="bp4-heading" style={commitsGrid}>
-        Recent Commits
-      </h3>
-      <div style={commitsGrid}>
-        <div>
-          <table
-            style={tableStyles}
-            className="bp4-html-table bp4-html-table-striped bp4-html-table-condensed"
-          >
-            <thead>
-              <tr>
-                <th>Repo</th>
-                <th>Message</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {commits.map((data, index) => {
-                return data.payload.commits && data.payload.commits[0] ? (
-                  <tr key={index}>
-                    <td>{data.repo.name}</td>
-                    <td>
-                      {data.payload.commits.map((commit, index) => {
-                        return (
-                          <div key={index}>
-                            <a
-                              href={`https://github.com/${data.repo.name}/commit/${commit.sha}`}
-                            >
-                              {commit.message}
-                            </a>
-                          </div>
-                        )
-                      })}
-                    </td>
-                    <td>{moment(data.created_at).fromNow()}</td>
-                  </tr>
-                ) : null
-              })}
-            </tbody>
-          </table>
+      {isLoading ? (
+        <div style={{ padding: "50px" }}>
+          <Spinner size={SpinnerSize.LARGE} />
         </div>
-        <div
-          style={{
-            maxHeight: "400px",
+      ) : (
+        <Media
+          queries={{
+            xsmall: "(max-width: 399px)",
+            small: "(max-width: 599px)",
+            medium: "(min-width: 600px) and (max-width: 1199px)",
+            large: "(min-width: 1200px)",
           }}
         >
-          <Pie
-            options={{
-              maintainAspectRatio: false,
-              color: Colors.WHITE,
-            }}
-            data={{
-              labels: chartData.labels,
-              datasets: [
-                {
-                  data: chartData.data,
-                  backgroundColor: [
-                    Colors.CERULEAN1,
-                    Colors.CERULEAN2,
-                    Colors.CERULEAN3,
-                    Colors.CERULEAN4,
-                    Colors.CERULEAN5,
-                  ],
+          {matches => (
+            <>
+              <h3 className="bp4-heading" style={commitsGrid}>
+                Recent Commits
+              </h3>
 
-                  borderWidth: 1,
-                },
-              ],
-            }}
-          />
-        </div>
-      </div>
+              <div style={matches.small ? mobileCommitsGrid : commitsGrid}>
+                <div
+                  style={{
+                    maxHeight: "400px",
+                    minHeight: "300px"
+                   }}
+                >
+                  <Pie
+                    options={{
+                      maintainAspectRatio: false,
+                      color: Colors.WHITE,
+                    }}
+                    data={{
+                      labels: chartData.labels,
+                      datasets: [
+                        {
+                          data: chartData.data,
+                          backgroundColor: [
+                            Colors.CERULEAN1,
+                            Colors.CERULEAN2,
+                            Colors.CERULEAN3,
+                            Colors.CERULEAN4,
+                            Colors.CERULEAN5,
+                          ],
 
-      <Divider />
-      <h3 className="bp4-heading">Blog Posts</h3>
-      <div style={blogGrid}>
-        {posts.map((post, index) => {
-          return (
-            <Card key={index} elevation={Elevation.TWO}>
-              <img
-                alt={post.title}
-                src={post.social_image}
-                style={{ maxWidth: "100%" }}
-              />
-              <h5 className="bp4-heading">{post.title} </h5>
-              <div>
-                {post.tag_list.map((tag, index) => {
+                          borderWidth: 1,
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+                <div>
+                  <table
+                    style={tableStyles}
+                    className="bp4-html-table bp4-html-table-striped bp4-html-table-condensed"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Repository</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {commits.map((data, index) => {
+                        return data.payload.commits &&
+                          data.payload.commits[0] ? (
+                          <tr key={index}>
+                            <td>{data.repo.name}</td>
+                            <td>
+                              {data.payload.commits.map((commit, index) => {
+                                return (
+                                  <div key={index}>
+                                    <a
+                                      href={`https://github.com/${data.repo.name}/commit/${commit.sha}`}
+                                    >
+                                      {commit.message}
+                                    </a>
+                                  </div>
+                                )
+                              })}
+                            </td>
+                            <td>{moment(data.created_at).fromNow()}</td>
+                          </tr>
+                        ) : null
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <Divider />
+              <h3 className="bp4-heading">Blog Posts</h3>
+              <div style={matches.small ? mobileBlogGrid : blogGrid}>
+                {posts.map((post, index) => {
                   return (
-                    <Tag style={{ marginRight: "5px" }} key={index}>
-                      {tag}
-                    </Tag>
+                    <Card
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                      }}
+                      key={index}
+                      elevation={Elevation.TWO}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <img
+                          alt={post.title}
+                          src={post.social_image}
+                          style={{ maxWidth: "100%" }}
+                        />
+                        <h5
+                          style={{ marginTop: "10px" }}
+                          className="bp4-heading"
+                        >
+                          {post.title}
+                        </h5>
+                        <div
+                          style={{
+                            display: "grid",
+                            gridAutoFlow: "column",
+                            gap: "3px",
+                          }}
+                        >
+                          {post.tag_list.map((tag, index) => {
+                            return (
+                              <Tag style={{ textAlign: "center" }} key={index}>
+                                {tag}
+                              </Tag>
+                            )
+                          })}
+                        </div>
+                        <p
+                          style={{ marginTop: "10px" }}
+                          className="bp4-ui-text"
+                        >
+                          {post.description}
+                        </p>
+                      </div>
+                      <a style={{ color: Colors.WHITE }} href={post.url}>
+                        <Button intent="primary">Read</Button>
+                      </a>
+                    </Card>
                   )
                 })}
               </div>
-              <p className="bp4-ui-text" style={{ margin: "10px auto" }}>
-                {post.description}
-              </p>
-              <Button intent="primary">
-                <a style={{ color: Colors.WHITE }} href={post.url}>
-                  Read
-                </a>
-              </Button>
-            </Card>
-          )
-        })}
-      </div>
+            </>
+          )}
+        </Media>
+      )}
     </Layout>
   )
 }

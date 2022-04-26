@@ -6,7 +6,7 @@
   "author": "Robert Peterman",
   "dependencies": {
     "@blueprintjs/core": "^4.2.0",
-    "@octokit/core": "^3.6.0",
+    "@sindresorhus/slugify": "^2.1.0",
     "chart.js": "^3.7.1",
     "gatsby": "^4.12.1",
     "gatsby-plugin-gatsby-cloud": "^4.12.1",
@@ -25,7 +25,8 @@
     "react": "^17.0.1",
     "react-chartjs-2": "^4.1.0",
     "react-dom": "^17.0.1",
-    "react-helmet": "^6.1.0"
+    "react-helmet": "^6.1.0",
+    "react-media": "^1.10.0"
   },
   "devDependencies": {
     "prettier": "^2.6.2"

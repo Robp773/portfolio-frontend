@@ -1,6 +1,8 @@
 import * as React from "react"
 import Layout from "../components/layout"
 import TechDisplay from "../components/techDisplay"
+import Media from 'react-media';
+
 
 const tagContainerStyle = {
   textAlign: "center",
@@ -9,6 +11,8 @@ const tagContainerStyle = {
   flexWrap: "wrap",
 }
 
+const dividerStyle = { margin: "auto 5px" }
+
 const introTextWrapper = {
   margin: "20px 0",
 }
@@ -16,7 +20,6 @@ const introTextWrapper = {
 const IndexPage = data => {
   return (
     <Layout path={data.location.pathname}>
-
       <div style={introTextWrapper}>
         <h2 style={{ textAlign: "center" }} className="bp4-heading">
           Rob Peterman
@@ -24,6 +27,31 @@ const IndexPage = data => {
         <h3 style={{ textAlign: "center" }} className="bp4-heading">
           Full Stack JavaScript Developer
         </h3>
+
+     
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <a target="#" href="mailto:robpeterman573@gmail.com">
+            Email
+          </a>
+          <div style={dividerStyle}>|</div>
+          <a target="#" href="https://www.linkedin.com/in/robertpeterman92/">
+            LinkedIn
+          </a>
+          <div style={dividerStyle}>|</div>
+          <a target="#" href="https://angel.co/u/robert-peterman">
+            AngelList
+          </a>
+          <div style={dividerStyle}>|</div>
+          <a target="#" href="https://github.com/Robp773">
+            GitHub
+          </a>
+        </div>
       </div>
 
       <div>
