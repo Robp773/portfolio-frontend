@@ -16,7 +16,6 @@ const lightboxStyles = {
 }
 
 const ActivityPage = data => {
-
   const { strapiProject } = data.data
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -68,22 +67,25 @@ const ActivityPage = data => {
               >
                 {strapiProject.screenshots.map((screenshot, index) => {
                   return (
-                    <GatsbyImage
-                      key={index}
+                    <span
                       onClick={() => {
-                        setIsModalOpen(true)
                         setActiveImage(
                           screenshot.localFile.childImageSharp.gatsbyImageData
                         )
+                        setIsModalOpen(true)
                       }}
-                      style={{
-                        cursor: "pointer",
-                        height: `${matches.small ? "150px" : "200px"}`,
-                      }}
-                      image={
-                        screenshot.localFile.childImageSharp.gatsbyImageData
-                      }
-                    />
+                    >
+                      <GatsbyImage
+                        key={index}
+                        style={{
+                          cursor: "pointer",
+                          height: `${matches.small ? "150px" : "200px"}`,
+                        }}
+                        image={
+                          screenshot.localFile.childImageSharp.gatsbyImageData
+                        }
+                      />
+                    </span>
                   )
                 })}
               </div>
